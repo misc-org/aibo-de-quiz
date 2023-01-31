@@ -1,0 +1,46 @@
+.wide_title {
+	padding: 30px;
+	text-align: center;
+	font-weight: 800;
+	font-size: 40px;
+	line-height: 1.5em;
+	color: var(--m3-on-primary-container);
+	background-color: var(--m3-inverse-primary);
+}
+
+.main {
+	padding: 16px;
+	text-align: center;
+}
+
+.mdc-button {
+	text-transform: none;
+}
+
+.mdc-drawer {
+	background-color: var(--m3-back);
+}
+
+.mdc-drawer--modal + .mdc-drawer-scrim {
+	background-color: rgba(0, 0, 0, 0.32);
+}
+
+.mdc-dialog .mdc-dialog__scrim {
+	background-color: rgba(0, 0, 0, 0.32);
+}
+
+.mdc-dialog .mdc-dialog__surface {
+	background-color: var(--m3-back);
+}
+
+.mdc-drawer--modal {
+	box-shadow: none;
+}
+
+.mdc-text-field__input {
+	margin-left: 10px;
+}
+
+.smui-badge.smui-badge--color-secondary {
+	background-color: var(--m3-inverse-primary);
+}
