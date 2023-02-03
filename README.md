@@ -46,22 +46,22 @@ sequenceDiagram
   Note right of app: Send Grant Code <br /> [`/register`]
 
   functions ->>+ aibo Cloud: クライアントID, クライアントシークレット, codeを送る
-  Note right of functions: Token Request
+  Note right of functions: Tokens Request <br /> (authentication_code)
 
   aibo Cloud -->>- functions: アクセストークン, リフレッシュトークンなどを返す
-  Note left of aibo Cloud: Token Response
+  Note left of aibo Cloud: Tokens Response
 
   functions ->>+ aibo Cloud: デバイスIDの要求
-  Note right of functions: API Request (deviceId)
+  Note right of functions: Aibo API Request (deviceId)
 
   aibo Cloud -->>- functions: デバイスIDとニックネームを返す
-  Note left of aibo Cloud: Devices[]
+  Note left of aibo Cloud: DeviceInfo[]
 
   loop デバイスIDの数だけループ
 
   functions ->>+ firestore: デバイスIDの存在を確認 <br /> (過去に登録したことがある)
   firestore -->>- functions: ストアを返す or 存在しない
-  Note left of firestore: FireStore Type | null
+  Note left of firestore: Tokens Store | null
 
   alt ストアが存在する (過去に登録したことがある)
     functions ->> functions: ハッシュとニックネームを保持
@@ -72,7 +72,7 @@ sequenceDiagram
     Note left of functions: string (SHA-256)
 
     functions ->>+ firestore: ハッシュをキーに, デバイスIDや<br />トークンなどを保存
-    Note right of functions: FireStore Type
+    Note right of functions: Tokens Store
     firestore -->>- functions: OK/200
    end
   end
@@ -107,7 +107,7 @@ sequenceDiagram
   Note right of functions: Get Data
 
   firestore -->>- functions: トークン類を返す
-  Note left of firestore: FireStoreType?
+  Note left of firestore: TokenStore?
 
   alt ハッシュが存在しない
     functions ->> app: 403/forbidden
@@ -116,7 +116,7 @@ sequenceDiagram
 
   alt トークンが有効期限切れ
     functions ->>+ aibo Cloud: デバイスIDとリフレッシュトークンを使って<br />アクセストークンを再取得
-    Note right of functions: Refresh Token Request
+    Note right of functions: Tokens Request <br /> (refresh_token)
 
     aibo Cloud -->>- functions: 新しいアクセストークンを返す
     Note left of aibo Cloud: string
@@ -152,7 +152,7 @@ sequenceDiagram
 
 
   app ->>+ functions: データ更新の要求
-  Note right of app: User Data Update <br /> [`/store` (GET)]
+  Note right of app: User Data Store <br /> [`/store/get`]
 
   alt ハッシュが存在しない
     functions ->> app: 403/forbidden
@@ -161,10 +161,12 @@ sequenceDiagram
 
   functions ->>+ firestore: ストアの要求
 
-  firestore -->>- functions: 200/OK
-  Note right of functions: User Data
+  firestore -->>- functions: ストアを返す
+  Note right of functions: User Data Store
 
-  functions -->>- app: 200/OK
+  functions -->>- app: ストアを返す
+  Note left of functions: User Data Store
+
 ```
 
 ### スコア (ユーザーデータ) 登録
@@ -184,7 +186,7 @@ sequenceDiagram
 
 
   app ->>+ functions: ユーザーデータ更新の要求
-  Note right of app: User Data Request <br /> [`/store` (POST)]
+  Note right of app: User Data Request <br /> [`/store/update`]
 
   alt ハッシュが存在しない
     functions ->> app: 403/forbidden
@@ -196,6 +198,5 @@ sequenceDiagram
 
   firestore -->>- functions: 200/OK
 
-  functions -->>- app: ユーザーデータを返す
-  Note left of functions: User Data
+  functions -->>- app: 200/OK
 ```
