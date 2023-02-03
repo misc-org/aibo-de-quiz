@@ -54,7 +54,7 @@ sequenceDiagram
   functions ->>+ aibo Cloud: デバイスIDの要求
   Note right of functions: API Request (deviceId)
 
-  aibo Cloud -->>- functions: デバイスIDを返す
+  aibo Cloud -->>- functions: デバイスIDとニックネームを返す
   Note left of aibo Cloud: Devices[]
 
   loop デバイスIDの数だけループ
@@ -74,13 +74,7 @@ sequenceDiagram
     functions ->>+ firestore: ハッシュをキーに, デバイスIDや<br />トークンなどを保存
     Note right of functions: FireStore Type
     firestore -->>- functions: OK/200
-
-    functions ->>+ aibo Cloud: ニックネームの要求
-    Note right of functions: API Request (nickname)
-
-    aibo Cloud -->>- functions: ニックネームを返す
-    Note left of aibo Cloud: string
-  end
+   end
   end
   functions ->>- app: ハッシュとニックネームを返す
   Note left of functions: DeviceInfo[]
