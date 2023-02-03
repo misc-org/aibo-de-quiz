@@ -57,9 +57,20 @@ sequenceDiagram
   aibo Cloud -->>- functions: デバイスIDを返す
   Note left of aibo Cloud: Devices[]
 
-  functions ->> functions: デバイスID + ランダム文字列 でデバイスハッシュを作成
-
   loop デバイスIDの数だけループ
+
+  functions ->>+ firestore: デバイスIDの存在を確認 <br /> (過去に登録したことがある)
+  firestore -->>- functions: ストアを返す or 存在しない
+  Note left of firestore: FireStore Type | null
+
+  alt ストアが存在する (過去に登録したことがある)
+    functions ->> functions: ハッシュとニックネームを保持
+    Note left of functions: DeviceInfo
+
+  else ストアが存在しない (初回)
+    functions ->> functions: デバイスID + ランダム文字列 でデバイスハッシュを作成
+    Note left of functions: string (SHA-256)
+
     functions ->>+ firestore: ハッシュをキーに, デバイスIDや<br />トークンなどを保存
     Note right of functions: FireStore Type
     firestore -->>- functions: OK/200
@@ -70,7 +81,7 @@ sequenceDiagram
     aibo Cloud -->>- functions: ニックネームを返す
     Note left of aibo Cloud: string
   end
-
+  end
   functions ->>- app: ハッシュとニックネームを返す
   Note left of functions: DeviceInfo[]
 
@@ -117,7 +128,7 @@ sequenceDiagram
     Note left of aibo Cloud: string
 
     functions ->>+ firestore: ディープコピーでアクセストークンの更新
-    Note right of functions: FireStore Type
+    Note right of functions: Tokens Store Update
     firestore -->>- functions: OK/200
   end
 
@@ -130,8 +141,67 @@ sequenceDiagram
   Note left of functions: Aibo API Response
 ```
 
-### スコア登録
+### スコア (ユーザーデータ) 取得
 
 ```mermaid
+sequenceDiagram
+  autonumber
+	participant app
+	participant functions
+	participant firestore
 
+  app ->> app: ハッシュとハッシュの有効期限を取得
+  alt 1分後 > 有効期限
+    app ->> app: ハッシュを破棄
+    Note right of app: もう一度連携させる
+  end
+
+
+  app ->>+ functions: データ更新の要求
+  Note right of app: User Data Update <br /> [`/store` (GET)]
+
+  alt ハッシュが存在しない
+    functions ->> app: 403/forbidden
+    Note left of functions: Error
+  end
+
+  functions ->>+ firestore: ストアの要求
+
+  firestore -->>- functions: 200/OK
+  Note right of functions: User Data
+
+  functions -->>- app: 200/OK
+```
+
+### スコア (ユーザーデータ) 登録
+
+```mermaid
+sequenceDiagram
+  autonumber
+	participant app
+	participant functions
+	participant firestore
+
+  app ->> app: ハッシュとハッシュの有効期限を取得
+  alt 1分後 > 有効期限
+    app ->> app: ハッシュを破棄
+    Note right of app: もう一度連携させる
+  end
+
+
+  app ->>+ functions: ユーザーデータ更新の要求
+  Note right of app: User Data Request <br /> [`/store` (POST)]
+
+  alt ハッシュが存在しない
+    functions ->> app: 403/forbidden
+    Note left of functions: Error
+  end
+
+  functions ->>+ firestore: ストアの更新
+  Note right of functions: User Data
+
+  firestore -->>- functions: 200/OK
+
+  functions -->>- app: ユーザーデータを返す
+  Note left of functions: User Data
 ```
