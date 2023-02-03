@@ -21,7 +21,7 @@ type TokensRevokeRequest = {
 
 type TokensRevokeResponse = {};
 
-type Devices = {
+type DeviceInfo = {
   deviceId: string;
   nickname: string;
 };
@@ -38,4 +38,51 @@ type TokensStore = {
 type UserDataStore = {
   deviceHash: string;
   score: number;
+};
+
+type UserDataUpdateRequest = {
+  deviceHash: string;
+  userData: UserDataStore;
+};
+
+type UserDataUpdateResponse = {};
+
+type UserDataGetRequest = {
+  deviceHash: string;
+};
+
+type UserDataGetResponse = UserDataStore;
+
+type AiboAPIRequest = {
+  deviceHash: string;
+  apiId: string;
+  args: string | undefined;
+};
+
+type AiboAPIResponse = {
+  result: string;
+};
+
+type ResponseType =
+  | TokensResponse
+  | TokensRevokeResponse
+  | UserDataUpdateResponse
+  | UserDataGetResponse
+  | AiboAPIResponse;
+
+export type {
+  TokensRequest,
+  TokensResponse,
+  TokensRevokeRequest,
+  TokensRevokeResponse,
+  DeviceInfo,
+  TokensStore,
+  UserDataStore,
+  UserDataUpdateRequest,
+  UserDataUpdateResponse,
+  UserDataGetRequest,
+  UserDataGetResponse,
+  AiboAPIRequest,
+  AiboAPIResponse,
+  ResponseType,
 };

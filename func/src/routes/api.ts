@@ -1,5 +1,9 @@
 import {Request, Response} from '@google-cloud/functions-framework';
+import {responseError} from '../util/constant';
+import {AiboAPIResponse} from '../util/types';
 
-export default function api(req: Request, res: Response): void {
-  res.send('api called!');
+export default function routeAPI(req: Request, res: Response): AiboAPIResponse {
+  return {
+    result: 'OK',
+  };
 }

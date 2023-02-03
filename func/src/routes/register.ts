@@ -1,5 +1,14 @@
 import {Request, Response} from '@google-cloud/functions-framework';
+import {DeviceInfo} from '../util/types';
 
-export default function register(req: Request, res: Response): void {
-  res.send('register called!');
+export default function routeRegister(
+  req: Request,
+  res: Response
+): DeviceInfo[] {
+  return [
+    {
+      deviceId: '1234567890',
+      nickname: 'Aibo',
+    },
+  ];
 }
