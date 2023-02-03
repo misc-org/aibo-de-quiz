@@ -1,31 +1,56 @@
-import {HttpFunction} from '@google-cloud/functions-framework';
-import _ from 'lodash';
-import {pathValidator} from './auth/validator';
-import {getInstFileUrl} from './get/inst_file_url';
+import {
+  HttpFunction,
+  Request,
+  Response,
+} from '@google-cloud/functions-framework';
 
-export let count = 0;
+import _ from 'lodash';
+import index from './routes';
+import api from './routes/api';
+import register from './routes/register';
+import store from './routes/store';
+import {responseError} from './util/constant';
+
+const operation: {
+  pathId: string;
+  method: (req: Request, res: Response) => void;
+}[] = [
+  {
+    pathId: '',
+    method: index,
+  },
+  {
+    pathId: 'api',
+    method: api,
+  },
+  {
+    pathId: 'store',
+    method: store,
+  },
+  {
+    pathId: 'register',
+    method: register,
+  },
+];
 
 export const main: HttpFunction = async (req, res) => {
-  count++;
-  console.log(count);
-
   const path = req.path;
   const pathArr = path.split('/');
+  const pathId = pathArr[1];
+  const method = _.find(operation, {pathId: pathId});
 
-  pathValidator(res, path);
-  const requestedOperation = `${pathArr[2]}/${pathArr[3]}`;
-
-  const operations = [
-    {
-      name: 'admin/admin',
-      func: () => {},
-    },
-    {
-      name: 'get/inst_file_url',
-      func: () => getInstFileUrl(req, res),
-    },
-  ];
-
-  const operation = _.find(operations, {name: requestedOperation});
-  operation?.func();
+  if (method) {
+    try {
+      method.method(req, res);
+    } catch (e) {
+      throw responseError(
+        res,
+        500,
+        'Internal Server Error',
+        e as unknown as string
+      );
+    }
+  } else {
+    res.status(404).send('Not Found');
+  }
 };
