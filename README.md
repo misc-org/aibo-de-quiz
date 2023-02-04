@@ -55,7 +55,7 @@ sequenceDiagram
   Note right of functions: Aibo API Request (deviceId)
 
   aibo Cloud -->>- functions: デバイスIDとニックネームを返す
-  Note left of aibo Cloud: DeviceInfo[]
+  Note left of aibo Cloud: DeviceRawInfo[]
 
   loop デバイスIDの数だけループ
 

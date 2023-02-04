@@ -1,14 +1,17 @@
 import {HttpFunction} from '@google-cloud/functions-framework';
-
+import cors from 'cors';
 import _ from 'lodash';
 import {responseError} from './util/constant';
+import {handlePreFlight} from './util/preflight';
 import {operation} from './util/routes';
 
 export const main: HttpFunction = async (req, res) => {
+  handlePreFlight(req, res);
   const path = req.path;
   const pathArr = path.split('/');
+
   const pathId = pathArr[1];
-  const method = _.find(operation, {pathId: pathId});
+  const method = _.find(operation, {pathId});
 
   if (method === undefined) {
     throw responseError(
