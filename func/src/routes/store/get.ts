@@ -7,6 +7,6 @@ export default function routeStoreGet(
 ): UserDataGetResponse {
   return {
     deviceHash: '********',
-    score: 30,
+    data: {score: 30},
   };
 }

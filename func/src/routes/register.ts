@@ -7,7 +7,7 @@ export default function routeRegister(
 ): DeviceInfo[] {
   return [
     {
-      deviceId: '1234567890',
+      deviceHash: '1234567890',
       nickname: 'Aibo',
     },
   ];
