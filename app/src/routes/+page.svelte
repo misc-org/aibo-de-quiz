@@ -1,9 +1,5 @@
 <script lang="ts">
-  import { FailedCatchHandler } from '$lib/model/error/handler';
-  import { Style } from '$lib/model/inline-style';
   import { KitchenController } from '$lib/model/kitchen';
-  import { actionAPIs, targetCloseTo } from '$lib/model/service/api';
-  import { AiboActionAPI } from '$lib/model/service/helper/action';
   import { isLoading } from '$lib/model/store';
   import Button, { Label } from '@smui/button';
   import { onMount } from 'svelte';
@@ -31,13 +27,15 @@
 
 <main class="main">
   <h5>この画面で実装すること</h5>
-  <div style="text-align: left">
+  <div class="what-to-implement">
     <ol>
       <li>“aiboでクイズ”というタイトルをつける</li>
-      <li>クリックすると <code>/quiz</code> へ飛ぶ “スタート” ボタンを置いて, デザインする</li>
-      <li>クリックすると <code>/user</code> へ飛ぶ “アカウント” ボタンを置いて, デザインする</li>
+      <li>クリックすると <code>/quiz</code> へ飛ぶ “スタート” ボタンを置いて, 装飾する</li>
+      <li>クリックすると <code>/user</code> へ飛ぶ “アカウント” ボタンを置いて, 装飾する</li>
     </ol>
   </div>
+  <br />
+  <br />
 
   <Button on:click={onButtonClicked} variant="raised">
     <Label>テストボタン</Label>
@@ -45,6 +43,7 @@
 </main>
 
 <style lang="scss">
+  @use './common.scss';
   .title {
     padding: 20px;
     span {

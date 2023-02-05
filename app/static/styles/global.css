@@ -8,11 +8,6 @@
   background-color: var(--m3-inverse-primary);
 }
 
-.main {
-  padding: 16px;
-  text-align: center;
-}
-
 .mdc-button {
   text-transform: none;
 }
