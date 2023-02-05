@@ -1,6 +1,16 @@
 import Axios from 'axios';
+import _ from 'lodash';
 import type { valueOf } from '../constants';
 import { aiboWebAPIFailedReasonData } from '../error/reasons';
+import { currentExecutionStatus } from '../store';
+import type { DeviceInfo, AiboFuncExecutionRequest, AiboFuncStatusRequest } from '../types/func';
+import {
+  type AiboAPIs,
+  type AiboFuncExecutionResponse,
+  type AiboFuncStatusResponse,
+  type ExecutionStatusFailed,
+  executionStatusList
+} from './api';
 import { ENVS } from './env';
 
 export const authStatus = {
@@ -77,5 +87,60 @@ export class AiboFuncBroadcaster {
         }
       }
     });
+  }
+}
+
+export class AiboAPI<T extends AiboAPIs> {
+  constructor(public readonly currentDeviceInfo: DeviceInfo, public readonly api: T) {}
+
+  protected async runExecution(args: object): Promise<AiboFuncExecutionResponse> {
+    const postData: AiboFuncExecutionRequest = {
+      deviceHash: this.currentDeviceInfo.deviceHash,
+      apiId: this.api.apiId,
+      args
+    };
+
+    return await new AiboFuncBroadcaster(postData).post2Functions<AiboFuncExecutionResponse>('api');
+  }
+
+  protected async askStatus(executionId: string): Promise<AiboFuncStatusResponse> {
+    const postData: AiboFuncStatusRequest = {
+      deviceHash: this.currentDeviceInfo.deviceHash,
+      executionId
+    };
+
+    return await new AiboFuncBroadcaster(postData).post2Functions<AiboFuncStatusResponse>('api');
+  }
+
+  protected async handleFailedStatus(latestStatusResult: AiboFuncStatusResponse): Promise<void> {
+    switch (latestStatusResult.status) {
+      case 'FAILED': {
+        const result = latestStatusResult.result as ExecutionStatusFailed;
+        await Promise.reject(
+          _.filter(aiboWebAPIFailedReasonData, {
+            status: result.detail
+          })[0]
+        );
+        return;
+      }
+
+      case 'REQUESTED':
+        currentExecutionStatus.set(executionStatusList.failed);
+
+        await Promise.reject(aiboWebAPIFailedReasonData.cannotReachLambda);
+        return;
+
+      case 'ACCEPTED':
+      case 'IN_PROGRESS':
+      case 'TIMEOUT':
+        currentExecutionStatus.set(executionStatusList.timeout);
+
+        await Promise.reject(aiboWebAPIFailedReasonData.aiboAPITimeout);
+        return;
+
+      case 'NONE': {
+        await Promise.reject(aiboWebAPIFailedReasonData.cannotDetectReason);
+      }
+    }
   }
 }

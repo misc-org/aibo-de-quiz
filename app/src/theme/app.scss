@@ -74,3 +74,13 @@ b,
 strong {
   font-weight: bold;
 }
+
+.main {
+  padding: 0 100px;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  @media screen and (max-width: 860px) {
+    padding: 0 20px;
+  }
+}

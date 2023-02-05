@@ -18,8 +18,6 @@ export async function FailedCatchHandler(err: any): Promise<void> {
 
   let args: KitchenArgs;
 
-  console.log('');
-
   switch (typedErr) {
     case aiboWebAPIFailedReasonData.deviceHashNotFound:
       args = {

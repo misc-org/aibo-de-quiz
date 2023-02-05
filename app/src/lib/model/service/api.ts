@@ -1799,7 +1799,7 @@ interface AiboFuncStatusResponse {
   executionId: string;
   status: ExecutionStatusList;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  result: any;
+  result: object;
 }
 
 const executionStatusList = {

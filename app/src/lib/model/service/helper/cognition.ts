@@ -1,62 +1,24 @@
 import { wait } from '$lib/model/constants';
 import { aiboWebAPIFailedReasonData } from '$lib/model/error/reasons';
 import { currentExecutionStatus } from '$lib/model/store';
-import type {
-  AiboFuncExecutionRequest,
-  AiboFuncStatusRequest,
-  DeviceInfo
-} from '$lib/model/types/func';
+import type { DeviceInfo } from '$lib/model/types/func';
 import _ from 'lodash';
-import {
-  executionStatusList,
-  type ActionAPIs,
-  type AiboFuncExecutionResponse,
-  type ExecutionStatusFailed,
-  type AiboFuncStatusResponse,
-  type CognitionAPIs
-} from '../api';
-import { AiboFuncBroadcaster } from '../broadcast';
+import { executionStatusList, type AiboFuncStatusResponse, type CognitionAPIs } from '../api';
+import { AiboAPI } from '../broadcast';
 
-export class AiboCognitionAPI {
-  constructor(
-    private readonly currentDeviceInfo: DeviceInfo,
-    private readonly api: CognitionAPIs
-  ) {}
-
-  private async runExecution(
-    args: ReturnType<ActionAPIs['args']>
-  ): Promise<AiboFuncExecutionResponse> {
-    const argsUpperCamel = _.mapKeys(args, (value, key) => _.upperFirst(key));
-
-    const postData: AiboFuncExecutionRequest = {
-      deviceHash: this.currentDeviceInfo.deviceHash,
-      apiId: this.api.apiId,
-      args: argsUpperCamel
-    };
-
-    return await new AiboFuncBroadcaster(postData).post2Functions<AiboFuncExecutionResponse>('api');
+export class AiboCognitionAPI extends AiboAPI<CognitionAPIs> {
+  constructor(public readonly currentDeviceInfo: DeviceInfo, public readonly api: CognitionAPIs) {
+    super(currentDeviceInfo, api);
   }
 
-  private async askStatus(executionId: string): Promise<AiboFuncStatusResponse> {
-    const postData: AiboFuncStatusRequest = {
-      deviceHash: this.currentDeviceInfo.deviceHash,
-      executionId
-    };
-
-    return await new AiboFuncBroadcaster(postData).post2Functions<AiboFuncStatusResponse>('api');
-  }
-
-  public async runAPI(
-    args: ReturnType<ActionAPIs['args']>,
-    maxRequestsNum?: number
-  ): Promise<void> {
+  public async runAPI(maxRequestsNum?: number): Promise<ReturnType<CognitionAPIs['result']>> {
     console.group('AiboActionAPI -> runAPI()');
 
     currentExecutionStatus.set(executionStatusList.requested);
 
     let executionId = '';
 
-    await this.runExecution(args).then((result) => {
+    await this.runExecution({}).then((result) => {
       const typedResult = result;
 
       if (typedResult.status === 'FAILED') {
@@ -76,7 +38,7 @@ export class AiboCognitionAPI {
     let currentStatusResult: AiboFuncStatusResponse = {
       executionId,
       status: 'REQUESTED',
-      result: ''
+      result: {}
     };
 
     do {
@@ -105,38 +67,8 @@ export class AiboCognitionAPI {
     console.log(`broadcasting finished: ${latestStatusResult.status}`);
     console.groupEnd();
 
-    switch (latestStatusResult.status) {
-      case 'SUCCEEDED': {
-        await Promise.resolve();
-        return;
-      }
-      case 'FAILED': {
-        const result = latestStatusResult.result as ExecutionStatusFailed;
-        await Promise.reject(
-          _.filter(aiboWebAPIFailedReasonData, {
-            status: result.detail
-          })[0]
-        );
-        return;
-      }
+    await this.handleFailedStatus(latestStatusResult);
 
-      case 'REQUESTED':
-        currentExecutionStatus.set(executionStatusList.failed);
-
-        await Promise.reject(aiboWebAPIFailedReasonData.cannotReachLambda);
-        return;
-
-      case 'ACCEPTED':
-      case 'IN_PROGRESS':
-      case 'TIMEOUT':
-        currentExecutionStatus.set(executionStatusList.timeout);
-
-        await Promise.reject(aiboWebAPIFailedReasonData.aiboAPITimeout);
-        return;
-
-      case 'NONE': {
-        await Promise.reject(aiboWebAPIFailedReasonData.cannotDetectReason);
-      }
-    }
+    return await Promise.resolve(latestStatusResult.result as ReturnType<CognitionAPIs['result']>);
   }
 }

@@ -10,9 +10,12 @@
       "parser": "svelte-eslint-parser",
       "parserOptions": {
         "parser": "@typescript-eslint/parser",
-        "project": ["app/tsconfig.json"]
+        "project": ["site/tsconfig.json"]
       },
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-unused-vars": 0,
+        "no-inner-declarations": 0
+      }
     }
   ],
   "parserOptions": {
@@ -21,6 +24,8 @@
     "extraFileExtensions": [".svelte"],
     "project": ["app/tsconfig.json"]
   },
+  "plugins": ["@typescript-eslint"],
+
   "rules": {
     "@typescript-eslint/no-floating-promises": ["warn"],
     "@typescript-eslint/semi": 0
