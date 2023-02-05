@@ -35,13 +35,13 @@ const setMode = {
   }
 } as const;
 
-const Mode = {
+const mode = {
   /** aibo が指示待ち中から戻ります。 */
   normal: 'NORMAL',
   /** aibo が指示待ち中になります。 */
   development: 'DEVELOPMENT'
 } as const;
-type Mode = valueOf<typeof Mode>;
+type Mode = valueOf<typeof mode>;
 
 //
 //
@@ -91,17 +91,17 @@ const approachObject = {
     return { targetType, enqueue };
   }
 } as const;
-export const TargetObject = {
-  /** 旧型の AIBO（ERS-110 や ERS-7 など）と新型の aibo（ERS-1000）*/
+export const targetObject = {
+  /** 旧型の AIBO（ERS-110 や ERS-7 など）と新型の aibo（ERS-1000） */
   aibo: 'aibo',
-  /** aibo 専用アクセサリーのアイボーン*/
+  /** aibo 専用アクセサリーのアイボーン */
   aibone: 'aibone',
-  /** aibo 専用アクセサリーのサイコロ*/
+  /** aibo 専用アクセサリーのサイコロ */
   dice: 'dice',
   /** aibo 専用アクセサリーのピンクボール  */
   pinkBall: 'pinkball'
 } as const;
-export type TargetObject = valueOf<typeof TargetObject>;
+export type TargetObject = valueOf<typeof targetObject>;
 
 const approachPerson = {
   apiId: 'approach_person',
@@ -132,7 +132,7 @@ const changePosture = {
   }
 } as const;
 
-export const FinalPosture = {
+export const finalPosture = {
   /** おなかを見せる */
   back: 'back',
   /** しゃがむ */
@@ -154,7 +154,7 @@ export const FinalPosture = {
   /** まっすぐ立つ */
   standStraight: 'stand_straight'
 } as const;
-export type FinalPosture = (typeof FinalPosture)[keyof typeof FinalPosture];
+export type FinalPosture = (typeof finalPosture)[keyof typeof finalPosture];
 
 const chaseObject = {
   apiId: 'chase_object',
@@ -256,7 +256,7 @@ const getCloseToObject = {
   }
 } as const;
 
-export const TargetCloseTo = {
+export const targetCloseTo = {
   /** 専用アクセサリーのアイボーン */
   aibone: 'aibone',
   /** 専用アクセサリーのサイコロ */
@@ -264,7 +264,7 @@ export const TargetCloseTo = {
   /** 専用アクセサリーのピンクボール */
   pinkBall: 'pinkball'
 } as const;
-export type TargetCloseTo = valueOf<typeof TargetCloseTo>;
+export type TargetCloseTo = valueOf<typeof targetCloseTo>;
 
 const kickObject = {
   apiId: 'kick_object',
@@ -275,24 +275,24 @@ const kickObject = {
    * @param kickMotion どのように蹴ったりヘディングしたりするかを指定します。
    * @param enqueue Queueing する場合は true を設定します。
    */
-  args: (kickObject: KickObject, kickMotion: KickMotion, enqueue = false) => {
+  args: (kickObject: KickObjectTo, kickMotion: KickMotion, enqueue = false) => {
     return { kickObject, kickMotion, enqueue };
   }
 } as const;
 
-export const KickMotion = {
+export const kickMotion = {
   /** aibo が指定されたものを蹴ります。 */
   kick: 'kick',
   /** aibo が指定されたものをヘディングします。 */
   heading: 'heading'
 } as const;
-export type KickMotion = valueOf<typeof KickMotion>;
+export type KickMotion = valueOf<typeof kickMotion>;
 
-export const KickObject = {
+export const kickObjectTo = {
   /** aibo 専用アクセサリーのピンクボール */
   pickBall: 'pinkball'
 } as const;
-export type KickObject = valueOf<typeof KickObject>;
+export type KickObjectTo = valueOf<typeof kickObjectTo>;
 
 const moveAlongCircle = {
   apiId: 'move_along_circle',
@@ -329,13 +329,13 @@ const moveAlongCircle = {
   }
 } as const;
 
-export const Direction = {
+export const direction = {
   /** aibo が左回りで歩きます。 */
   left: 'left',
   /** aibo が右回りで歩きます。 */
   right: 'right'
 } as const;
-export type Direction = valueOf<typeof Direction>;
+export type Direction = valueOf<typeof direction>;
 
 const moveDirection = {
   apiId: 'move_direction',
@@ -454,7 +454,7 @@ const moveToPosition = {
   }
 } as const;
 
-export const TargetPosition = {
+export const targetPosition = {
   /** チャージステーションの場所 */
   chargingStation: 'charging_station',
   /** 教えたおむかえ場所 */
@@ -462,7 +462,7 @@ export const TargetPosition = {
   /** 教えたトイレの場所 */
   toilet: 'toilet'
 } as const;
-export type TargetPosition = valueOf<typeof TargetPosition>;
+export type TargetPosition = valueOf<typeof targetPosition>;
 
 const playBone = {
   apiId: 'play_bone',
@@ -477,11 +477,11 @@ const playBone = {
   }
 } as const;
 
-export const CategoryBone = {
+export const categoryBone = {
   /** アイボーンをくわえる。 */
   holdMouth: 'holdMouth'
 } as const;
-export type CategoryBone = valueOf<typeof CategoryBone>;
+export type CategoryBone = valueOf<typeof categoryBone>;
 
 const playDice = {
   apiId: 'play_dice',
@@ -496,7 +496,7 @@ const playDice = {
   }
 } as const;
 
-export const CategoryDice = {
+export const categoryDice = {
   /** サイコロをくわえます。 */
   holdMouthDice: 'holdMouthDice',
   /** サイコロを左に転がします。 */
@@ -510,7 +510,7 @@ export const CategoryDice = {
   /** サイコロを別のサイコロの上に積み重ねます。サイコロをくわえている状態で行います。 */
   stackDice: 'stackDice'
 };
-export type CategoryDice = valueOf<typeof CategoryDice>;
+export type CategoryDice = valueOf<typeof categoryDice>;
 
 const playMotion = {
   apiId: 'play_motion',
@@ -527,7 +527,7 @@ const playMotion = {
   }
 } as const;
 
-export const CategoryMotion = {
+export const categoryMotion = {
   /** うなずく */
   agree: {
     category: 'agree',
@@ -983,7 +983,7 @@ export const CategoryMotion = {
     mode: 'NONE'
   }
 } as const;
-export type CategoryMotion = valueOf<typeof CategoryMotion>;
+export type CategoryMotion = valueOf<typeof categoryMotion>;
 
 const playTrick = {
   apiId: 'play_trick',
@@ -994,11 +994,11 @@ const playTrick = {
    * @param enqueue Queueing する場合は true を設定します。
    */
   args: (trickName: TrickName, enqueue = false) => {
-    return { trickName: trickName, enqueue };
+    return { trickName, enqueue };
   }
 };
 
-export const TrickName = {
+export const trickName = {
   /** ## スクワットしよう
    * aibo が意気込んでスクワットを始めます。
    */
@@ -1038,7 +1038,7 @@ export const TrickName = {
    */
   treeMinuteTimer: '3minuteTimer'
 } as const;
-export type TrickName = valueOf<typeof TrickName>;
+export type TrickName = valueOf<typeof trickName>;
 
 const releaseObject = {
   apiId: 'release_object',
@@ -1053,13 +1053,13 @@ const releaseObject = {
   }
 } as const;
 
-export const TargetReleaseObject = {
-  /** aibo 専用アクセサリーのアイボーン*/
+export const targetReleaseObject = {
+  /** aibo 専用アクセサリーのアイボーン */
   aibone: 'aibone',
-  /** aibo 専用アクセサリーのサイコロ*/
+  /** aibo 専用アクセサリーのサイコロ */
   dice: 'dice'
 };
-export type TargetReleaseObject = valueOf<typeof TargetReleaseObject>;
+export type TargetReleaseObject = valueOf<typeof targetReleaseObject>;
 
 const stay = {
   apiId: 'stay',
@@ -1107,32 +1107,32 @@ const bitingStatus = {
   result: (obj: object) => (obj as bitingStatusResult).biting_status
 } as const;
 
-type bitingStatusResult = {
+interface bitingStatusResult {
   /** 認識結果 */
   biting_status: {
     /** くわえていたかどうか */
     biting: boolean;
   };
-};
+}
 
 //
 const bodyTouchedStatus = {
   apiId: 'body_touched_status',
   result: (obj: object) => {
-    if (JSON.stringify(obj) === '[]') return { body_part: BodyPart.None };
+    if (JSON.stringify(obj) === '[]') return { body_part: bodyPart.None };
     return (obj as bodyTouchedStatusResult).body_touched_status;
   }
 } as const;
 
-type bodyTouchedStatusResult = {
+interface bodyTouchedStatusResult {
   /** 認識結果 */
   body_touched_status: {
     /** aibo が触られている場所 */
     body_part: BodyPart;
   };
-};
+}
 
-export const BodyPart = {
+export const bodyPart = {
   /** 触れていない場合 */
   None: 'None',
   /** おなか */
@@ -1144,7 +1144,7 @@ export const BodyPart = {
   /** あたま */
   head: 'head'
 } as const;
-export type BodyPart = valueOf<typeof BodyPart>;
+export type BodyPart = valueOf<typeof bodyPart>;
 
 //
 const foundObjectsStatus = {
@@ -1152,7 +1152,7 @@ const foundObjectsStatus = {
   result: (obj: object) => (obj as foundObjectsStatusResult).found_objects_status
 } as const;
 
-type foundObjectsStatusResult = {
+interface foundObjectsStatusResult {
   /** 認識結果 */
   found_objects_status: {
     /** aibo が見ていた／見ている対象物の種類 */
@@ -1164,8 +1164,8 @@ type foundObjectsStatusResult = {
     /** aibo から対象物への方角 */
     direction: FoundObjectDirection;
   };
-};
-export const FoundObjectName = {
+}
+export const foundObjectName = {
   /**	旧型の AIBO（ERS-110 や ERS-7 など）と新型の aibo（ERS-1000） */
   aibo: 'aibo',
   /**	aibo 専用アクセサリーのアイボーン */
@@ -1179,7 +1179,7 @@ export const FoundObjectName = {
   /**	aibo 専用アクセサリーのピンクボール */
   pinkball: 'pinkball'
 } as const;
-export type FoundObjectName = valueOf<typeof FoundObjectName>;
+export type FoundObjectName = valueOf<typeof foundObjectName>;
 
 export const foundObjectDistance = {
   /** ### 近距離
@@ -1223,13 +1223,13 @@ const hungryStatus = {
   result: (obj: object) => (obj as hungryStatusResult).hungry_status
 } as const;
 
-type hungryStatusResult = {
+interface hungryStatusResult {
   /** 認識結果 */
   hungry_status: {
     /** バッテリー残量 */
     energy: HungryEnergy;
   };
-};
+}
 
 export const hungryEnergy = {
   /** チャージステーションの上で、十分に充電されている */
@@ -1251,7 +1251,7 @@ const nameCalledStatus = {
   result: (obj: object) => (obj as nameCalledStatusResult).name_called_status
 } as const;
 
-type nameCalledStatusResult = {
+interface nameCalledStatusResult {
   /** 認識結果 */
   name_called_status: {
     /** 名前を呼ばれたかどうか。 */
@@ -1264,7 +1264,7 @@ type nameCalledStatusResult = {
     /** 名前を呼ばれた方角。 */
     voiceDirection: NameCalledDirection;
   };
-};
+}
 
 export const nameCalledDirection = {
   /** 前方 */
@@ -1292,7 +1292,7 @@ const pawPadsStatus = {
   result: (obj: object) => (obj as PawPadsStatusResult).paw_pads_status
 } as const;
 
-type PawPadsStatusResult = {
+interface PawPadsStatusResult {
   /** 認識結果 */
   paw_pads_status: {
     /** 右後足の肉球が押され始めてどれだけ経過したか。単位：秒。 */
@@ -1312,7 +1312,7 @@ type PawPadsStatusResult = {
     /** 左前足の肉球が押され始めてどれだけ経過したか。単位：秒。 */
     front_left_pressed_sec: number;
   };
-};
+}
 
 //
 const postureStatus = {
@@ -1320,13 +1320,13 @@ const postureStatus = {
   result: (obj: object) => (obj as PostureStatusResult).posture_status
 } as const;
 
-type PostureStatusResult = {
+interface PostureStatusResult {
   /** 認識結果 */
   posture_status: {
     /** aibo の姿勢 */
     body: PostureBody;
   };
-};
+}
 
 export const postureBody = {
   /**	充電中 */
@@ -1360,13 +1360,13 @@ const sleepyStatus = {
   result: (obj: object) => (obj as SleepyStatusResult).sleepy_status
 } as const;
 
-type SleepyStatusResult = {
+interface SleepyStatusResult {
   /** 認識結果 */
   sleepy_status: {
     /** aibo の眠さ */
     status: SleepyStatus;
   };
-};
+}
 
 export const sleepyAiboStatus = {
   /** まったく眠くなく、元気に活動中 */
@@ -1386,14 +1386,14 @@ const voiceCommandStatus = {
   result: (obj: object) => (obj as VoiceCommandStatusResult).voice_command_status
 } as const;
 
-type VoiceCommandStatusResult = {
+interface VoiceCommandStatusResult {
   /** 認識結果 */
   voice_command_status: {
     voiceAngle: number;
     command: VoiceCommand;
     voiceDirection: VoiceCommandDirection;
   };
-};
+}
 
 export const voiceCommand = {
   /** あっちいって */
@@ -1786,21 +1786,21 @@ const aiboAPIs = {
 //
 //
 // ExecutionReturn
-type AiboFuncExecutionResponse = {
+interface AiboFuncExecutionResponse {
   executionId: string;
   status: 'ACCEPTED' | 'FAILED';
   result: ExecutionStatusFailed;
-};
+}
 
 //
 //
 // ExecutionStatus
-type AiboFuncStatusResponse = {
+interface AiboFuncStatusResponse {
   executionId: string;
   status: ExecutionStatusList;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result: any;
-};
+}
 
 const executionStatusList = {
   /** 初期値 */
@@ -1824,10 +1824,10 @@ type ExecutionStatusList = valueOf<typeof executionStatusList>;
 //
 //
 // ExecutionStatusFailed
-type ExecutionStatusFailed = {
+interface ExecutionStatusFailed {
   failedResult: ExecutionStatusFailedResultList;
   detail: ExecutionStatusFailedDetailList;
-};
+}
 
 const executionStatusFailedResultList = {
   /** aibo が API 実行を開始できなかった */

@@ -1,75 +1,75 @@
-type TokensRequest = {
+interface TokensRequest {
   client_id: string;
   client_secret: string;
   grant_type: 'authorization_code' | 'refresh_token';
   code: string;
-};
+}
 
-type TokensResponse = {
+interface TokensResponse {
   access_token: string;
   refresh_token: string;
   token_type: 'Bearer';
   expires_in: 3600;
-};
+}
 
-type TokensRevokeRequest = {
+interface TokensRevokeRequest {
   client_id: string;
   client_secret: string;
   token: string;
   token_type_hint: 'refresh_token';
-};
+}
 
 type TokensRevokeResponse = Record<string, never>;
 
-type DeviceRawInfo = {
+interface DeviceRawInfo {
   deviceId: string;
   nickname: string;
-};
+}
 
-type DeviceInfo = {
+interface DeviceInfo {
   deviceHash: string;
   nickname: string;
-};
+}
 
-type TokensStore = {
+interface TokensStore {
   deviceHash: string;
   deviceId: string;
   nickname: string;
   accessToken: string;
   refreshToken: string;
   expiresAt: Date;
-};
+}
 
-type UserDataStore = {
+interface UserDataStore {
   deviceHash: string;
   data: {
     score: number;
   };
-};
+}
 
-type UserDataUpdateRequest = {
+interface UserDataUpdateRequest {
   deviceHash: string;
   userData: UserDataStore;
-};
+}
 
 type UserDataUpdateResponse = Record<string, never>;
 
-type UserDataGetRequest = {
+interface UserDataGetRequest {
   deviceHash: string;
-};
+}
 
 type UserDataGetResponse = UserDataStore;
 
-type AiboFuncExecutionRequest = {
+interface AiboFuncExecutionRequest {
   deviceHash: string;
   apiId: string;
   args: object;
-};
+}
 
-type AiboFuncStatusRequest = {
+interface AiboFuncStatusRequest {
   deviceHash: string;
   executionId: string;
-};
+}
 
 type AiboAPIResponse = object;
 

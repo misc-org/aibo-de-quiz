@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["standard-with-typescript", "prettier"],
+  "overrides": [
+    {
+      "files": ["*.svelte"],
+      "parser": "svelte-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "project": ["app/tsconfig.json"]
+      },
+      "rules": {}
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "extraFileExtensions": [".svelte"],
+    "project": ["app/tsconfig.json"]
+  },
+  "rules": {
+    "@typescript-eslint/no-floating-promises": ["warn"],
+    "@typescript-eslint/semi": 0
+  }
+}

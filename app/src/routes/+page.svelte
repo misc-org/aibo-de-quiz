@@ -9,9 +9,9 @@
 
   onMount(() => ($isLoading = false));
 
-  async function onButtonClicked() {
+  async function onButtonClicked(pre: any) {
     new KitchenController().push({
-      label: 'クリックされたのだ',
+      label: 'わあ  クリックされたのだ',
       dismissButton: false,
       onDismiss: () => null,
       onClosed: () => null,
@@ -19,16 +19,6 @@
         timeoutMs: 4000
       }
     });
-
-    const a = await new AiboActionAPI(
-      {
-        deviceHash: '123',
-        nickname: 'aibo'
-      },
-      actionAPIs.approachObject
-    )
-      .runAPI(actionAPIs.approachObject.args('aibo'))
-      .catch(FailedCatchHandler);
   }
 </script>
 

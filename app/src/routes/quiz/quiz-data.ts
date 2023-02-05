@@ -1,10 +1,10 @@
-export type QuizData = {
+export interface QuizData {
   question: string;
-  answers: {
+  answers: Array<{
     text: string;
     isCorrect?: true;
-  }[];
-};
+  }>;
+}
 
 export const quizData: QuizData[] = [
   {

@@ -7,6 +7,6 @@ if (ENV.VITE_FUNCTION_URL === undefined) {
 }
 
 export const ENVS = {
-  FUNCTION_URL: ENV.VITE_FUNCTION_URL
+  FUNCTION_URL: ENV.VITE_FUNCTION_URL as string
 } as const;
-export type ENVS = valueOf<typeof ENVS>;
+export type ENVS_TYPE = valueOf<typeof ENVS>;

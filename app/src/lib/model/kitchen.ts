@@ -1,22 +1,22 @@
 import { get } from 'svelte/store';
 import { currentKitchen } from './store';
 
-export type KitchenArgs = {
+export interface KitchenArgs {
   props?: {
     variant?: 'stacked';
     timeoutMs?: number;
     leading?: boolean;
   };
   label: string;
-  actions?: {
+  actions?: Array<{
     onClick: () => void;
     text: string;
-  }[];
+  }>;
   dismissButton: boolean;
   onDismiss: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClosed: (e: any) => void;
-};
+}
 
 export class KitchenController {
   public reason = '';
@@ -26,7 +26,7 @@ export class KitchenController {
     get(currentKitchen).push(args);
   }
 
-  public test() {
+  public test(): void {
     this.push({
       props: {
         variant: 'stacked',

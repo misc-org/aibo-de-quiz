@@ -1,11 +1,11 @@
 import type { valueOf } from '$lib/model/constants';
 
-type AiboWebAPIFailedReason = {
+interface AiboWebAPIFailedReason {
   key: string;
   id: string;
   status?: string;
   message: string;
-};
+}
 
 const cannotReachLambda: AiboWebAPIFailedReason = {
   key: 'cannotReachLambda',
@@ -143,7 +143,7 @@ const cannotDetectReason: AiboWebAPIFailedReason = {
   message: 'こちらの想定外のエラーが発生して、原因が分かりませんでした。そのまま続行してください。'
 };
 
-export const AiboWebAPIFailedReasonData = {
+export const aiboWebAPIFailedReasonData = {
   cannotReachLambda,
   deviceHashNotRegistered,
   internalLambdaError,
@@ -166,4 +166,4 @@ export const AiboWebAPIFailedReasonData = {
   cannotDetectReason
 } as const;
 
-export type AiboWebAPIFailedReasonData = valueOf<typeof AiboWebAPIFailedReasonData>;
+export type AiboWebAPIFailedReasonData = valueOf<typeof aiboWebAPIFailedReasonData>;

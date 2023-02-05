@@ -8,7 +8,7 @@
   import PageTransition from '$lib/components/page-transition.svelte';
   import LinearProgress from '@smui/linear-progress';
   import Splash from '$lib/components/splash.svelte';
-  import { isLandscapeDetect, PathId, runTransition } from '$lib/model/constants';
+  import { isLandscapeDetect, pathId, runTransition, type PathId } from '$lib/model/constants';
   import type { PageData } from './$types';
   import Button, { Label } from '@smui/button';
   import BackToTop from '$lib/components/back-to-top.svelte';
@@ -39,10 +39,10 @@
     <TopAppBar bind:this={topAppBar} variant="fixed">
       <Row>
         <Section>
-          <IconButton class="material-icons-outlined" on:click={() => runTransition(PathId.home)}>
-            collections_bookmark
+          <IconButton class="material-icons-outlined" on:click={() => runTransition(pathId.home)}>
+            contact_support
           </IconButton>
-          <Title style="cursor: pointer;" on:click={() => runTransition(PathId.home)}
+          <Title style="cursor: pointer;" on:click={() => runTransition(pathId.home)}
             ><strong>aibo-de-quiz</strong></Title
           >
         </Section>

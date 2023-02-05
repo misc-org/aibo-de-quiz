@@ -1,9 +1,9 @@
 import Axios from 'axios';
 import type { valueOf } from '../constants';
-import { AiboWebAPIFailedReasonData } from '../error/reasons';
+import { aiboWebAPIFailedReasonData } from '../error/reasons';
 import { ENVS } from './env';
 
-export const AuthStatus = {
+export const authStatus = {
   none: 'none',
   waiting: 'waiting',
   success: 'success',
@@ -11,7 +11,7 @@ export const AuthStatus = {
   errSection: 'errSection',
   alreadyLinked: 'alreadyLinked'
 } as const;
-export type AuthStatus = (typeof AuthStatus)[keyof typeof AuthStatus];
+export type AuthStatus = (typeof authStatus)[keyof typeof authStatus];
 
 export const aiboFunctionPath = {
   index: '',
@@ -26,7 +26,7 @@ export const aiboFunctionPath = {
 export type AiboFunctionPath = valueOf<typeof aiboFunctionPath>;
 
 export class AiboFuncBroadcaster {
-  constructor(private postData: object) {}
+  constructor(private readonly postData: object) {}
 
   private async connectionTest(): Promise<boolean> {
     let isConnectionValid = false;
@@ -44,9 +44,10 @@ export class AiboFuncBroadcaster {
       console.error('cannot pass connectionTest() => false');
       console.groupEnd();
       console.groupEnd();
-      return Promise.reject(AiboWebAPIFailedReasonData.cannotReachLambda);
+      return await Promise.reject(aiboWebAPIFailedReasonData.cannotReachLambda);
     }
 
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-base-to-string
     const functionUrl = `${ENVS.FUNCTION_URL}/${path}`;
 
     return await Axios.post(functionUrl, this.postData, {
@@ -59,20 +60,20 @@ export class AiboFuncBroadcaster {
         console.log(' <- received JSON <- :\n', data);
         console.groupEnd();
 
-        return Promise.resolve(data as T);
+        return await Promise.resolve(data as T);
       } else {
         console.warn(' <- received code <- :', res.status);
         console.groupEnd();
 
         switch (res.status) {
           case 406:
-            return Promise.reject(AiboWebAPIFailedReasonData.deviceHashNotFound);
+            return await Promise.reject(aiboWebAPIFailedReasonData.deviceHashNotFound);
           case 429:
-            return Promise.reject(AiboWebAPIFailedReasonData.aiboAPIReturnsBusy);
+            return await Promise.reject(aiboWebAPIFailedReasonData.aiboAPIReturnsBusy);
           case 502:
-            return Promise.reject(AiboWebAPIFailedReasonData.internalLambdaError);
+            return await Promise.reject(aiboWebAPIFailedReasonData.internalLambdaError);
           default:
-            return Promise.reject(AiboWebAPIFailedReasonData.cannotDetectReason);
+            return await Promise.reject(aiboWebAPIFailedReasonData.cannotDetectReason);
         }
       }
     });
