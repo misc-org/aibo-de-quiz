@@ -3,6 +3,7 @@ import type Kitchen from '@smui/snackbar/kitchen';
 import type { DeviceInfo } from './types/func';
 import type { ExecutionStatusList } from './service/api';
 import type { PathId } from './constants';
+import type { QuizResult } from './types/app';
 
 const currentPath = writable<PathId>();
 const currentKitchen = writable<Kitchen>();
@@ -13,6 +14,8 @@ const isLoading = writable(true);
 const isBusy = writable(false);
 const isLandscape = writable(false);
 
+const quizResult = writable<QuizResult>([]);
+
 export {
   currentPath,
   currentKitchen,
@@ -20,5 +23,6 @@ export {
   currentExecutionStatus,
   isLoading,
   isBusy,
-  isLandscape
+  isLandscape,
+  quizResult
 };

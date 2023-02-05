@@ -21,7 +21,9 @@
   let hasAppMounted = false;
 
   onMount(async () => {
-    currentPath.set(new URL(location.href).pathname as PathId);
+    const path = new URL(location.href).pathname;
+    const pathName = path.split('/')[1];
+    currentPath.set(pathName as PathId);
     hasAppMounted = true;
     updateSize();
 
@@ -45,12 +47,6 @@
           <Title style="cursor: pointer;" on:click={() => runTransition(pathId.home)}
             ><strong>aibo-de-quiz</strong></Title
           >
-        </Section>
-        <Section align="end" toolbar>
-          <Button on:click={() => goto('https://github.com/wappon-28-dev/tpl-svelte')}>
-            <Icon class="material-icons">launch</Icon>
-            <Label>source</Label>
-          </Button>
         </Section>
       </Row>
 

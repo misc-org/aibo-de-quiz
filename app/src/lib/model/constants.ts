@@ -27,11 +27,14 @@ function isLandscapeDetect(): boolean {
   return navigator.userAgent.match(/iPhone|Android.+Mobile/) == null && window.innerWidth > 730;
 }
 
-const runTransition = (path: PathId): void => {
+function runTransition(path: PathId): void {
   if (get(currentPath) === path) return;
+  currentPath.set(path);
   isLoading.set(true);
-  void goto(base + path);
-};
+
+  const pathTo = `${base}/${path}`;
+  void goto(pathTo);
+}
 
 export type { PathId, valueOf, PickType };
 export { pathId, wait, assert, isLandscapeDetect, runTransition };
