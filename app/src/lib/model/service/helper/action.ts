@@ -5,7 +5,6 @@ import type { DeviceInfo } from '$lib/model/types/func';
 import _ from 'lodash';
 import { executionStatusList, type ActionAPIs, type AiboFuncStatusResponse } from '../api';
 import { AiboAPI } from '../broadcast';
-
 export class AiboActionAPI extends AiboAPI<ActionAPIs> {
   constructor(public readonly currentDeviceInfo: DeviceInfo, public readonly api: ActionAPIs) {
     super(currentDeviceInfo, api);
@@ -16,7 +15,7 @@ export class AiboActionAPI extends AiboAPI<ActionAPIs> {
   }
 
   public async runAPI(
-    args: ReturnType<ActionAPIs['args']>,
+    args: ReturnType<this['api']['args']>,
     maxRequestsNum?: number
   ): Promise<void> {
     console.group('AiboActionAPI -> runAPI()');

@@ -11,7 +11,7 @@ export class AiboCognitionAPI extends AiboAPI<CognitionAPIs> {
     super(currentDeviceInfo, api);
   }
 
-  public async runAPI(maxRequestsNum?: number): Promise<ReturnType<CognitionAPIs['result']>> {
+  public async runAPI(maxRequestsNum?: number): Promise<ReturnType<this['api']['result']>> {
     console.group('AiboActionAPI -> runAPI()');
 
     currentExecutionStatus.set(executionStatusList.requested);
@@ -69,6 +69,6 @@ export class AiboCognitionAPI extends AiboAPI<CognitionAPIs> {
 
     await this.handleFailedStatus(latestStatusResult);
 
-    return await Promise.resolve(latestStatusResult.result as ReturnType<CognitionAPIs['result']>);
+    return await Promise.resolve(latestStatusResult.result as ReturnType<this['api']['result']>);
   }
 }

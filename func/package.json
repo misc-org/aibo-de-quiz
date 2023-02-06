@@ -31,7 +31,6 @@
     "@types/validator": "^13.7.10",
     "axios": "^1.2.2",
     "concurrently": "^7.6.0",
-    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "lodash": "^4.17.21",
     "nodemon": "^2.0.20",

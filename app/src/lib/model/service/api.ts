@@ -1778,9 +1778,9 @@ const cognitionAPIs = {
 };
 
 const aiboAPIs = {
-  SettingAPIs: settingAPIs,
-  ActionAPIs: actionAPIs,
-  CognitionAPIs: cognitionAPIs
+  settingAPIs,
+  actionAPIs,
+  cognitionAPIs
 };
 
 //
