@@ -1,5 +1,4 @@
 import {HttpFunction} from '@google-cloud/functions-framework';
-import cors from 'cors';
 import _ from 'lodash';
 import {responseError} from './util/constant';
 import {handlePreFlight} from './util/preflight';
