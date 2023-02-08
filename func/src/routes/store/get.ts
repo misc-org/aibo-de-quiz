@@ -1,14 +1,9 @@
 import {Request, Response} from '@google-cloud/functions-framework';
-import {
-  UserDataGetResponse,
-  DeviceInfo,
-  UserDataGetRequest,
-} from '../../util/types';
+import {UserDataGetResponse, UserDataGetRequest} from '../../util/types';
 
-import {initializeApp} from 'firebase/app';
-import {getFirestore} from 'firebase/firestore';
-import {doc, getDoc} from 'firebase/firestore';
+import {doc,getDoc} from 'firebase/firestore';
 import {responseError} from '../../util/constant';
+import {db} from '../../util/firebase';
 
 /**
  * ## `/store/get`: ユーザーデータの取得
@@ -47,27 +42,15 @@ export default async function routeStoreGet(
   const reqDeviceHash = body.deviceHash;
 
   if (!reqDeviceHash) {
-    throw responseError(res, 400, 'Bad Request', 'デバイスハッシュは？');
+    throw responseError(res, 403, 'Bad Request', 'デバイスハッシュが存在しません');
   }
+  console.log(reqDeviceHash);
 
-  const firebaseConfig = {};
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  //仮のハッシュ値
-  const deviceHash = '12345';
-
-  const docRef = doc(db, 'cities', 'SF');
-
+  const docRef = doc(db, 'users', reqDeviceHash);
   const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    console.log('Document data:', docSnap.data());
-  } else {
-    // doc.data() will be undefined in this case
-    console.log('No such document!');
-  }
-
+  console.log(docSnap.data());
+  
   return {
     deviceHash: reqDeviceHash,
     data: {score: 30},

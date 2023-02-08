@@ -6,6 +6,7 @@ import {operation} from './util/routes';
 
 export const main: HttpFunction = async (req, res) => {
   handlePreFlight(req, res);
+
   const path = req.path;
   const pathArr = path.split('/');
 
