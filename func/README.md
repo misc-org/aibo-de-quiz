@@ -36,6 +36,11 @@ $ yarn
 $ yarn run watch
 ```
 
+言語: TypeScript
+パッケージ: Express
+ホスト: Google Cloud - Functions
+データベース: Google Cloud - Firestore
+
 `http://localhost:8080` でデバッグ用のサーバーへアクセスできます
 
 ## [`/register`](./src/routes/register.ts): デバイス情報を登録する

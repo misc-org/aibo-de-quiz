@@ -22,7 +22,11 @@ export const main: HttpFunction = async (req, res) => {
   }
 
   try {
-    const response = method.method(req, res);
+    const response = await method.method(req, res);
+
+    if (response === undefined) {
+      throw new Error('response undefined');
+    }
     res.status(200).send(JSON.stringify(response));
   } catch (e) {
     throw responseError(res, 500, 'Internal Server Error', String(e));

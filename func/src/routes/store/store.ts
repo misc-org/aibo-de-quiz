@@ -3,14 +3,14 @@ import {responseError} from '../../util/constant';
 import routeStoreGet from './get';
 import routeStoreUpdate from './update';
 
-export default function routeStore(req: Request, res: Response) {
+export default async function routeStore(req: Request, res: Response) {
   const secondPath = req.path.split('/')[2];
 
   switch (secondPath) {
     case 'get':
-      return routeStoreGet(req, res);
+      return await routeStoreGet(req, res);
     case 'update':
-      return routeStoreUpdate(req, res);
+      return await routeStoreUpdate(req, res);
     case '' || undefined:
       throw responseError(
         res,

@@ -9,8 +9,15 @@
     "sourceType": "module",
     "project": ["func/tsconfig.json"]
   },
-
-  "rules": {
-    "node/no-unsupported-features/node-builtins": "ignore"
-  }
+  "overrides": [
+    {
+      "files": ["**/*.ts"],
+      "rules": {
+        "@typescript-eslint/no-floating-promises": "error"
+      },
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      }
+    }
+  ]
 }
