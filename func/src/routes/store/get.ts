@@ -4,9 +4,8 @@ import {
   UserDataGetRequest,
   UserDataStore,
 } from '../../util/types';
-
-import {doc, getDoc} from 'firebase/firestore';
 import {responseError} from '../../util/constant';
+import {doc, getDoc} from 'firebase/firestore';
 import {db} from '../../util/firebase';
 
 /**
