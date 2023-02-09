@@ -41,10 +41,7 @@ interface TokensStore {
 }
 
 interface UserDataStore {
-  deviceHash: string;
-  data: {
-    score: number;
-  };
+  score: number;
 }
 
 interface UserDataUpdateRequest {

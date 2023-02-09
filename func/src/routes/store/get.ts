@@ -1,7 +1,11 @@
 import {Request, Response} from '@google-cloud/functions-framework';
-import {UserDataGetResponse, UserDataGetRequest} from '../../util/types';
+import {
+  UserDataGetResponse,
+  UserDataGetRequest,
+  UserDataStore,
+} from '../../util/types';
 
-import {doc,getDoc} from 'firebase/firestore';
+import {doc, getDoc} from 'firebase/firestore';
 import {responseError} from '../../util/constant';
 import {db} from '../../util/firebase';
 
@@ -42,17 +46,27 @@ export default async function routeStoreGet(
   const reqDeviceHash = body.deviceHash;
 
   if (!reqDeviceHash) {
-    throw responseError(res, 403, 'Bad Request', 'デバイスハッシュが存在しません');
+    throw responseError(
+      res,
+      403,
+      'Bad Request',
+      'デバイスハッシュが存在しません'
+    );
   }
-  console.log(reqDeviceHash);
 
   const docRef = doc(db, 'users', reqDeviceHash);
   const docSnap = await getDoc(docRef);
 
-  console.log(docSnap.data());
-  
-  return {
-    deviceHash: reqDeviceHash,
-    data: {score: 30},
-  };
+  const data = docSnap.data() as UserDataStore;
+
+  if (!data) {
+    throw responseError(
+      res,
+      404,
+      'Not Found',
+      'デバイスハッシュが登録されていません'
+    );
+  }
+
+  return data;
 }
