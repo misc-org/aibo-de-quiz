@@ -63,7 +63,7 @@ $ yarn run watch
 1. 用意した情報を使って, aibo Cloud からトークン類を取得します
    - method: `tokensRequest -> TokensResponse`
 2. 取得したトークン類を使って, aibo Cloud からデバイス情報を取得します
-   - method: `aiboAPIRequest` -> DeviceRawInfo[]`
+   - method: `aiboAPIRequest` -> `DeviceRawInfo[]`
 3. 以下デバイス ID の数だけループします:
    - デバイス ID の存在を確認します
      - 存在する: ハッシュとニックネームを保持する

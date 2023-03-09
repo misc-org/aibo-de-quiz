@@ -1,7 +1,8 @@
-import routeIndex from '../routes';
-import routeAPI from '../routes/api';
-import routeRegister from '../routes/register';
-import routeStore from '../routes/store/store';
+import routeIndex from "routes";
+import routeAPI from "routes/api";
+import routeRegister from "routes/register";
+import routeStore from "routes/store/store";
+
 
 const index = {
   pathId: '',

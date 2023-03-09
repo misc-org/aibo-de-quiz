@@ -1,12 +1,12 @@
 import {Request, Response} from '@google-cloud/functions-framework';
 import {
-  UserDataGetResponse,
   UserDataGetRequest,
+  UserDataGetResponse,
   UserDataStore,
-} from '../../util/types';
-import {responseError} from '../../util/constant';
+} from 'util/types';
+import {responseError} from 'util/constant';
 import {doc, getDoc} from 'firebase/firestore';
-import {db} from '../../util/firebase';
+import {db} from 'util/firebase';
 
 /**
  * ## `/store/get`: ユーザーデータの取得

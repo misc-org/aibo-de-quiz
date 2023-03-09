@@ -1,11 +1,11 @@
-interface TokensRequest {
+interface TokensRequest {///
   client_id: string;
   client_secret: string;
   grant_type: 'authorization_code' | 'refresh_token';
   code: string;
 }
 
-interface TokensResponse {
+interface TokensResponse {///
   access_token: string;
   refresh_token: string;
   token_type: 'Bearer';
@@ -21,17 +21,17 @@ interface TokensRevokeRequest {
 
 type TokensRevokeResponse = Record<string, never>;
 
-interface DeviceRawInfo {
+interface DeviceRawInfo {///
   deviceId: string;
   nickname: string;
 }
 
-interface DeviceInfo {
+interface DeviceInfo {//
   deviceHash: string;
   nickname: string;
 }
 
-interface TokensStore {
+interface TokensStore {//
   deviceHash: string;
   deviceId: string;
   nickname: string;
@@ -40,24 +40,24 @@ interface TokensStore {
   expiresAt: Date;
 }
 
-interface UserDataStore {
+interface UserDataStore {//
   score: number;
 }
 
-interface UserDataUpdateRequest {
+interface UserDataUpdateRequest {//
   deviceHash: string;
   userData: UserDataStore;
 }
 
 type UserDataUpdateResponse = Record<string, never>;
 
-interface UserDataGetRequest {
+interface UserDataGetRequest {//
   deviceHash: string;
 }
 
-type UserDataGetResponse = UserDataStore;
+type UserDataGetResponse = UserDataStore;//
 
-interface AiboFuncExecutionRequest {
+interface AiboFuncExecutionRequest {//
   deviceHash: string;
   apiId: string;
   args: object;
@@ -68,7 +68,7 @@ interface AiboFuncStatusRequest {
   executionId: string;
 }
 
-type AiboAPIResponse = object;
+type AiboAPIResponse = object;//
 
 type ResponseType =
   | TokensResponse

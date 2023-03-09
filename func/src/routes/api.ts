@@ -1,6 +1,14 @@
 import {Request, Response} from '@google-cloud/functions-framework';
-import {responseError} from '../util/constant';
-import {AiboAPIResponse} from '../util/types';
+import {
+  AiboAPIResponse,
+  AiboFuncExecutionRequest,
+  AiboFuncStatusRequest,
+  TokensResponse,
+  TokensStore,
+} from 'util/types';
+import {responseError} from 'util/constant';
+import {doc, getDoc, setDoc} from 'firebase/firestore';
+import {db} from 'util/firebase';
 
 /**
  * ## `/api`: aibo Web API を呼び出す
@@ -36,8 +44,45 @@ import {AiboAPIResponse} from '../util/types';
  * @param res レスポンス
  * @returns aibo Web API の結果を返します
  */
-export default function routeAPI(req: Request, res: Response): AiboAPIResponse {
-  return {
-    result: 'OK',
-  };
+export default async function routeAPI(
+  req: Request,
+  res: Response
+): Promise<AiboAPIResponse> {
+  const aiboAPIRequest = req.body as
+    | AiboFuncExecutionRequest
+    | AiboFuncStatusRequest;
+  const reqDeviceHash = aiboAPIRequest.deviceHash;
+
+  if (!reqDeviceHash) {
+    throw responseError(
+      res,
+      403,
+      'Bad Request',
+      'デバイスハッシュが存在しません'
+    );
+  }
+
+  const docRef = doc(db, 'info', reqDeviceHash);
+  const docSnap = await getDoc(docRef);
+  const info = docSnap.data() as TokensStore;
+
+  const TokensRequest = req.body as TokensResponse;
+  const Expires_in = TokensRequest.expires_in;
+
+  if (+info.expiresAt > Expires_in) {
+    //aibo cloudに問い合わせてアクセストークンを受け取る
+    const TokensResponse = await TokensRequest(
+      info.deviceHash,
+      info.refreshToken
+    ); //今はErrorでok
+    await getDoc(TokensResponse);
+
+    //firestoreに保存する
+    setDoc(docRef, TokensResponse.accessToken);
+  }
+
+  //aiboAPIRequestで呼び出し
+  const data = await aiboAPIRequest(aiboAPIRequest); //今はErrorでok
+
+  return data;
 }

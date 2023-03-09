@@ -1,7 +1,8 @@
 import {Request, Response} from '@google-cloud/functions-framework';
-import {responseError} from '../../util/constant';
+import { responseError } from 'util/constant';
 import routeStoreGet from './get';
 import routeStoreUpdate from './update';
+
 
 export default async function routeStore(req: Request, res: Response) {
   const secondPath = req.path.split('/')[2];
