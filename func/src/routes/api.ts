@@ -3,6 +3,7 @@ import {
   AiboAPIResponse,
   AiboFuncExecutionRequest,
   AiboFuncStatusRequest,
+  TokensRequest,
   TokensResponse,
   TokensStore,
 } from '../util/types';
@@ -66,23 +67,38 @@ export default async function routeAPI(
   const docSnap = await getDoc(docRef);
   const info = docSnap.data() as TokensStore;
 
-  const TokensRequest = req.body as TokensResponse;
-  const Expires_in = TokensRequest.expires_in;
+  const tokensRequest = req.body as TokensResponse;
 
-  if (+info.expiresAt > Expires_in) {
+  if (+info.expiresAt > tokensRequest.expires_in) {
     //aibo cloudに問い合わせてアクセストークンを受け取る
-    const TokensResponse = await TokensRequest(
-      info.deviceHash,
-      info.refreshToken
-    ); //今はErrorでok
-    await getDoc(TokensResponse);
+    const respondedToken = await requestToken2AiboCloud({
+      client_id: '*****',
+      client_secret: '*****',
+      grant_type: 'refresh_token',
+      code: '***',
+    }); //今はErrorでok
 
     //firestoreに保存する
-    setDoc(docRef, TokensResponse.accessToken);
+    setDoc(docRef, respondedToken);
   }
 
   //aiboAPIRequestで呼び出し
-  const data = await aiboAPIRequest(aiboAPIRequest); //今はErrorでok
+  const data = await requestAiboAPI(aiboAPIRequest); //今はErrorでok
 
   return data;
+}
+
+async function requestToken2AiboCloud(
+  tokensRequest: TokensRequest
+): Promise<TokensResponse> {
+  return Promise.resolve({
+    access_token: '*****',
+    refresh_token: '*****',
+    token_type: 'Bearer',
+    expires_in: 3600,
+  });
+}
+
+async function requestAiboAPI(args: object): Promise<AiboAPIResponse> {
+  return Promise.resolve({});
 }
