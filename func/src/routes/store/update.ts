@@ -3,10 +3,10 @@ import {
   UserDataUpdateResponse,
   UserDataUpdateRequest,
   UserDataStore,
-} from 'util/types';
-import {responseError} from 'util/constant';
+} from '../../util/types';
+import {responseError} from '../../util/constant';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {db} from 'util/firebase';
+import {db} from '../../util/firebase';
 
 /**
  *

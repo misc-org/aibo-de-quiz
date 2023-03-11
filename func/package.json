@@ -15,7 +15,7 @@
   "scripts": {
     "clean": "gts clean",
     "start": "functions-framework --source=dist/src/main.js --target=main",
-    "watch": "concurrently \"tsc -w\" \"nodemon --watch ./dist/ --exec yarn run start\"",
+    "watch": "concurrently 'tsc -w' 'nodemon --watch ./dist/ --exec yarn run start'",
     "compile": "tsc",
     "fix": "gts fix",
     "pretest": "yarn run compile",

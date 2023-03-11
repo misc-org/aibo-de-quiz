@@ -1,6 +1,6 @@
 import {Request, Response} from '@google-cloud/functions-framework';
-import { responseError } from 'util/constant';
-import { DeviceInfo } from 'util/types';
+import {responseError} from '../util/constant';
+import {DeviceInfo} from '../util/types';
 
 /**
  * ## `/register`: デバイス情報を登録する
