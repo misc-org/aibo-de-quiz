@@ -1,0 +1,8 @@
+name = "aibo-de-quiz"
+main = "src/index.ts"
+compatibility_date = "2023-04-28"
+
+[[ d1_databases ]]
+database_name = "aibo-de-quiz-db"
+database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+binding = "DB"
