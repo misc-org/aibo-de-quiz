@@ -27,7 +27,7 @@ export class Store {
 
   async putUser(user: DBUsers): Promise<void> {
     if (await this.userExists(user.uuid)) {
-      console.log("User already exists, updating tokens");
+      throw new StoreError("User already exists", 409);
     }
 
     let insertResult: D1Result | undefined;

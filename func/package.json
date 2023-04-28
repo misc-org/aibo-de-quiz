@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "predev": "wrangler d1 execute lapsquash_analyzer_db --local --file=./db/schema.sql",
+    "predev": "wrangler d1 execute aibo-de-quiz-db --local --file=./db/schema.sql",
     "dev": "wrangler dev src/index.ts --local --persist",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
